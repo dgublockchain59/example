@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+//암호화
+const crypto =require("crypto");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -17,26 +19,53 @@ var client = mysql.createConnection({
     database : "ogu" //접속할 DB
 })
 
-router.get('/', function(req, res, next) {
+router.get('/showUser', function(req, res, next) {
   client.query("SELECT * FROM user;", function(err, result, fields){
     if(err){
       console.log("쿼리문에 오류가 있습니다.");
     }
     else{
-      res.json(result);
+      res.render('showUser', {
+        results: result
+      });
     }
   });
+});
 
+router.get('/login', function(req, res, next) {
+  res.render('login');
+});
+
+router.post("/login", function(req,res,next){
+  var body = req.body;
+
+  client.query('select * from user where id=\'' + body.id + '\' and passwd=\'' + body.passwd + '\'', function(err, result, fields){
+    if(!err){
+      if(result[0]!=undefined){
+        console.log("비밀번호 일치");
+        res.redirect("/");
+      }
+      else{
+        console.log("비밀번호 불일치");
+          res.redirect("/login");
+      }
+    } else {
+        res.send('error : ' + err);
+    }
+  });
 });
 
 router.get('/signUp', function(req, res, next) {
   res.render('signUp');
 });
 
-
 router.post('/signUp', function(req, res, next) {
   var body = req.body;
   
+  // var inputPassword = body.passwd;
+  // var salt = Math.round((new Date().valueOf() * Math.random())) + "";
+  // var hashPassword = crypto.createHash("sha512").update(inputPassword + salt).digest("hex");
+
   client.query("INSERT INTO user (id, passwd) VALUES (?,?)", [
       body.id, body.passwd
     ], function(){
