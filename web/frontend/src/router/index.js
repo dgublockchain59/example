@@ -6,7 +6,6 @@ Vue.use(Router)
 import IndexPage from '@/components/IndexPage'
 import LoginPage from '@/components/LoginPage'
 
-
 export default new Router({
   mode: 'history',
   routes: [
@@ -16,7 +15,7 @@ export default new Router({
       component: IndexPage
     },
     {
-      path: '/loginPage',
+      path: '/login',
       name: 'LoginPage',
       component: LoginPage
     }
