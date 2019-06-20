@@ -19,7 +19,7 @@
          placeholder="Enter Password"
        ></b-form-input>
      </b-form-group>
-     <b-button type="submit" variant="primary">Submit</b-button>
+     <b-button type="submit" variant="primary" @click=loginSubmit>Submit</b-button>
      <b-button type="reset" variant="danger">Reset</b-button>
    </b-form>
   </div>
@@ -40,26 +40,11 @@ export default {
   }
   }, 
   methods: {
-    // signUp: function (event) {
-    //   this.$http.post('localhost:3000/login/add', { //axios 사용
-    //     user: this.user
-    //   })
-    //   .then((response) => {
-    //     if (response.data.result === 0) {
-    //       alert('Error, please, try again')
-    //     }
-    //     if (response.data.result === 1) {
-    //       alert('Success')
-    //       this.$router.push('/login') // Login 페이지로 보내줌
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     alert('error')
-    //   })
-    // }
     loginSubmit: function() {
       console.log("로그인");
-      this.$Axios.post(`http://127.0.0.1:3000/login/auth`, { id: this.id, passwd: this.passwd}).then(
+      this.$http.post('/api/login/auth', 
+        { id: this.id, passwd: this.passwd})
+        .then(
         res=> {
           console.log(res);
           this.$router.push("/");

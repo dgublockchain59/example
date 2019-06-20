@@ -21,9 +21,11 @@ connection.connect()
 router.use(bodyParser.urlencoded({extended:true}))
 
 //insert user
-router.post('/login/auth', function (req, res) {
+router.post('/', function (req, res, next) {
     var id = req.body.id
     var passwd = req.body.passwd
+
+    console.log('in the login.js')
 
     if(id && passwd) { // userID와 userPW가 유효하다면
 
@@ -33,6 +35,7 @@ router.post('/login/auth', function (req, res) {
 
             if (error) { //에러 발생시
                 res.send('err : ' + error)
+                console.log(error)
             }
             else { //실행 성공
                 console.log( id + ',' + passwd )
